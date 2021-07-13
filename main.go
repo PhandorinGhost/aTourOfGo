@@ -1,28 +1,19 @@
 package main
 
-import (
-	"fmt"
-	"math"
-)
+import "golang.org/x/tour/pic"
 
-func Sqrt(x float64) float64 {
-	z := float64(1)
-	var privVal float64
-	var i int = 1
-	for {
-		fmt.Printf("%d - %v\n", i, z)
-		z -= (z*z - x) / (2 * z)
-		if z == privVal || math.Abs(privVal-z) < 1e-13 {
-			break
-		} else {
-			privVal = z
-			i++
+func Pic(dx, dy int) [][]uint8 {
+	result := make([][]uint8, dy)
+	for y := 0; y < dy; y++ {
+		slc := make([]uint8, dx)
+		for x := 0; x < dx; x++ {
+			slc[x] = uint8(x * y)
 		}
+		result[y] = slc
 	}
-	return z
+	return result
 }
 
 func main() {
-	fmt.Println("My___Sqrt - ", Sqrt(2))
-	fmt.Println("Math_Sqrt - ", math.Sqrt(2))
+	pic.Show(Pic)
 }
