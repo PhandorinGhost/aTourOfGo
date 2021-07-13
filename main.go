@@ -1,35 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"math"
+	"golang.org/x/tour/reader"
 )
 
-type ErrNegativeSqrt float64
+type MyReader struct{}
 
-func (e ErrNegativeSqrt) Error() string {
-	return fmt.Sprintf("cannot Sqrt negative number: %f", e)
-}
-
-func Sqrt(x float64) (float64, error) {
-	if x < 0 {
-		return 0, ErrNegativeSqrt(x)
+func (r MyReader) Read(b []byte) (n int, err error) {
+	for i := 0; i < len(b); i++ {
+		b[i] = 'A'
 	}
-	z := float64(1)
-	var privVal float64
 
-	for {
-		z -= (z*z - x) / (2 * z)
-		if z == privVal || math.Abs(privVal-z) < 1e-13 {
-			break
-		} else {
-			privVal = z
-		}
-	}
-	return z, nil
+	return len(b), nil
 }
 
 func main() {
-	fmt.Println(Sqrt(2))
-	fmt.Println(Sqrt(-2))
+	reader.Validate(MyReader{})
 }
