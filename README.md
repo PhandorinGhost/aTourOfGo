@@ -1,2 +1,2 @@
 # aTourOfGo
-exercises form tour of Go
+exercises from tour of Go
