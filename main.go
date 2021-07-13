@@ -4,22 +4,18 @@ import (
 	"fmt"
 )
 
-// fibonacci is a function that returns
-// a function that returns an int.
-func fibonacci() func() int {
-	var x, y int = 0, 1
-	return func() int {
-		rez := x
-		x = y
-		y += rez
+type IPAddr [4]byte
 
-		return rez
-	}
+func (ip IPAddr) String() string {
+	return fmt.Sprintf("%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3])
 }
 
 func main() {
-	f := fibonacci()
-	for i := 0; i < 10; i++ {
-		fmt.Println(f())
+	hosts := map[string]IPAddr{
+		"loopback":  {127, 0, 0, 1},
+		"googleDNS": {8, 8, 8, 8},
+	}
+	for name, ip := range hosts {
+		fmt.Printf("%v: %v\n", name, ip)
 	}
 }
