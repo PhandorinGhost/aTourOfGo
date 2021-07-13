@@ -6,10 +6,18 @@ import (
 )
 
 func Sqrt(x float64) float64 {
-	z := float64(2)
-	for i := 1; i <= 10; i++ {
-		fmt.Printf("%d - %.15f\n", i, z)
+	z := float64(1)
+	var privVal float64
+	var i int = 1
+	for {
+		fmt.Printf("%d - %v\n", i, z)
 		z -= (z*z - x) / (2 * z)
+		if z == privVal || math.Abs(privVal-z) < 1e-13 {
+			break
+		} else {
+			privVal = z
+			i++
+		}
 	}
 	return z
 }
