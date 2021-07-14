@@ -1,49 +1,30 @@
 package main
 
 import (
-	"io"
-	"log"
-	"os"
-	"strings"
-	"unicode"
+	"image"
+	"image/color"
+
+	"golang.org/x/tour/pic"
 )
 
-func rot13(bt byte) byte {
-	if !unicode.IsLetter(rune(bt)) {
-		return bt
-	}
-	var rez byte
-	if (bt >= 'a' && bt <= 'm') || (bt >= 'A' && bt <= 'M') {
-		rez = bt + 13
-	} else if (bt >= 'n' && bt <= 'z') || (bt >= 'N' && bt <= 'Z') {
-		rez = bt - 13
-	}
-
-	return rez
+type Image struct {
+	x, y int
 }
 
-type rot13Reader struct {
-	r io.Reader
+func (i Image) ColorModel() color.Model {
+	return color.RGBAModel
 }
 
-func (rot rot13Reader) Read(b []byte) (int, error) {
-	number, err := rot.r.Read(b)
-	if err != nil {
-		return 0, err
-	}
+func (i Image) Bounds() image.Rectangle {
+	return image.Rect(0, 0, i.x, i.y)
+}
 
-	for i := 0; i < number; i++ {
-		b[i] = rot13(b[i])
-	}
+func (i Image) At(x, y int) color.Color {
 
-	return number, err
+	return color.RGBA{uint8(x), uint8(y), 255, 255}
 }
 
 func main() {
-	s := strings.NewReader("Lbh penpxrq gur pbqr!")
-	r := rot13Reader{s}
-	_, err := io.Copy(os.Stdout, &r)
-	if err != nil {
-		log.Println(err)
-	}
+	m := Image{255, 255}
+	pic.ShowImage(m)
 }
